@@ -22,22 +22,28 @@ $total_harga = $_GET['total'];
 
 //Mengeksekusi/menjalankan query diatas	
   $hasil=mysqli_query($koneksi,$sql);
-    require_once('phpmailer.php');
+    // require_once('phpmailer.php');
+$email_from = 'noreply@lembahtumpang.xyz';
+
 
     $to       = "$email";
     $subject  = 'Your Recepient';
-    $message  =  " Nama Pemesan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;$nama<br>
-                  Tanggal Pemesanan&nbsp;:&nbsp;$tanggal_tiket<br>
-                  Tiket Dewasa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;$jumlah_tiket_dewasa pcs  X Rp.20.000 = Rp.&nbsp;$total_harga_tiket_dewasa,00<br>
-                  Tiket Anak&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;$jumlah_tiket_anak_anak pcs X Rp.30.000 = Rp.$total_harga_tiket_anak_anak,00<br>
-                  Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= Rp.$total_harga,00
-                    ";
-   smtp_mail($to, $subject, $message,  0, 0, true);
+    $message  =  "Nama Pemesan: $nama.\n".
+                    "Tanggal Pemesanan: $tanggal_tiket.\n".
+                    "Tiket Dewasa:$jumlah_tiket_dewasa pcs  X Rp.20.000 = Rp.$total_harga_tiket_dewasa,00.\n".
+                    "Tiket Anak     : $jumlah_tiket_anak_anak pcs X Rp.30.000 = Rp.$total_harga_tiket_anak_anak,00.\n".
+                    "Total                                    = Rp.$total_harga,00.\n";
+
+$headers = "From: $email_from \r\n";
+
+$headers .= "Reply-To: $email \r\n";
+
+
 
 //Kondisi apakah berhasil atau tidak
   if ($hasil){  
- 
-  // mail($email,$subyek,$header); 
+ mail($to,$subject,$message,$headers);
+
 
 	header("location:selesai.php"); 
   
